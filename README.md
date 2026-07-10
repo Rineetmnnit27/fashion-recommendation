@@ -1,20 +1,20 @@
-# Fashion Recommendation Engine
+ Fashion Recommendation Engine
 
 A visual similarity search app: upload a fashion photo and get the 5 most
 visually similar items from your catalog, powered by a ResNet50 CNN feature
 extractor and a K-Nearest Neighbors (cosine similarity) search.
 
-## Architecture
+ Architecture
 
-- **Feature extraction**: ResNet50 (ImageNet weights), top classification
+- Feature extraction: ResNet50 (ImageNet weights), top classification
   layer removed, `GlobalAveragePooling2D` added -> 2048-dim embedding per
   image, L2-normalized.
-- **Similarity search**: `sklearn.neighbors.NearestNeighbors` with
+- Similarity search: `sklearn.neighbors.NearestNeighbors` with
   `metric="cosine"`, fitted once offline and reused at query time.
 
-## Project structure
+ Project structure
 
-```
+
 .
 ├── extract_features.py   # Offline indexing script
 ├── app.py                 # Streamlit application
@@ -25,17 +25,17 @@ extractor and a K-Nearest Neighbors (cosine similarity) search.
     ├── embeddings.pkl
     ├── filenames.pkl
     └── knn_model.pkl
-```
 
-## Setup
 
-```bash
+ Setup
+
+bash
 python -m venv venv
 source venv/bin/activate        # Windows: venv\Scripts\activate
 pip install -r requirements.txt
 ```
 
-## 1. Build the index (run once, or whenever your catalog changes)
+ 1. Build the index (run once, or whenever your catalog changes)
 
 Place your catalog images (jpg/png) under `data/images/` (subfolders are fine,
 the script walks recursively), then run:
@@ -47,16 +47,16 @@ python extract_features.py --dataset data/images --output artifacts
 This creates `artifacts/embeddings.pkl`, `artifacts/filenames.pkl`, and
 `artifacts/knn_model.pkl`.
 
-## 2. Launch the app
+ 2. Launch the app
 
-```bash
+bash
 streamlit run app.py
-```
 
-Open the local URL Streamlit prints (usually `http://localhost:8501`),
+
+Open the local URL Streamlit prints http://localhost:8501,
 upload an image, and view the top-5 visually similar recommendations.
 
-## Notes
+Notes
 
 - If `artifacts/` is missing or incomplete, `app.py` shows a clear error
   message telling you to run `extract_features.py` first, instead of
